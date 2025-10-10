@@ -1,0 +1,171 @@
+html, body {
+    height: 100%;
+    margin: 0; /* remove default page margin so centering is exact */
+}
+
+/* Page background and default text color (moved from inline) */
+body {
+    background-color: #000; /* black background to match logo */
+    color: #E7E0E4; /* default text color matching previous inline styles */
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    padding-bottom: 25em; /* provide extra empty space at page bottom so scroll continues past the button */
+}
+
+/* Import fonts: Public Sans for H1, JetBrains Mono for H2 */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Public+Sans:wght@400;700&display=swap');
+
+.flex-container {
+    display: flex;
+    justify-content: center; /* Horizontal center */
+    align-items: center;     /* Vertical center */
+    height: 100vh;          /* exactly fill viewport so only the image shows on load */
+    padding: 2rem;          /* some padding around the image */
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+.flex-container img {
+    display: block;                 /* remove inline spacing */
+    max-width: 100%;                /* don't exceed container width */
+    max-height: calc(100vh - 4rem); /* fit within viewport minus padding */
+    width: auto;
+    height: auto;
+    object-fit: contain;            /* preserve aspect ratio */
+}
+
+/* Title styling: centered, large, bold, and positioned close to the image */
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: clamp(2rem, 6vw, 6rem); /* place title below the viewport responsively */
+    gap: 0.25rem;
+    padding: 0 1rem; /* small horizontal padding for narrow screens */
+}
+
+.title h1, .title h2 {
+    margin: 0;
+    line-height: 1.05;
+    font-weight: 500; /* bold */
+    color: inherit; /* respect existing color (inline or inherited) */
+    -webkit-font-smoothing: antialiased;
+}
+
+.title h1 {
+    font-family: 'Public Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    font-size: clamp(2rem, 4vw, 4rem); /* responsive large heading */
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+.title h2 {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', 'Courier New', monospace;
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    opacity: 0.95;
+    margin-bottom: 1rem;
+}
+
+/* CTA button matching image aesthetic: square, no rounded corners, pastel rainbow gradient */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    min-width: 160px;
+    height: 48px; /* make it visually square-ish with min-width */
+    background: linear-gradient(135deg,
+        #ffd1dc 0%, /* pastel pink */
+        #ffe7b5 20%, /* pastel yellow */
+        #d6f0ff 40%, /* pastel blue */
+        #e8d7ff 60%, /* pastel lavender */
+        #d6ffd9 80% /* pastel green */
+    );
+    color: #0b0b0b;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45), inset 0 -1px 0 rgba(255,255,255,0.08);
+    cursor: pointer;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    border-radius: 0; /* square, no rounded corners */
+    position: relative;
+    transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms ease, filter 220ms ease;
+}
+
+.cta-button:focus,
+.cta-button:hover {
+    filter: brightness(1.02) saturate(1.02);
+    transform: translateY(-2px) scale(1.03);
+}
+
+/* Animated gradient glow using a pseudo-element */
+.cta-button::before {
+    content: '';
+    position: absolute;
+    inset: -6px; /* extend beyond the button to create a glow */
+    z-index: -1;
+    border-radius: 0;
+    opacity: 0;
+    background: linear-gradient(90deg,
+        #ffd1dc, #ffe7b5, #d6f0ff, #e8d7ff, #d6ffd9, #ffd1dc
+    );
+    filter: blur(14px);
+    transition: opacity 260ms ease, transform 260ms ease;
+    background-size: 300% 300%;
+}
+
+/* Gradient animation (cycles the gradient colors) */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Start glow and animate gradient on hover */
+.cta-button:hover::before,
+.cta-button:focus::before {
+    opacity: 1;
+    animation: gradientShift 3.5s linear infinite;
+}
+
+/* Stronger shadow while hovered */
+.cta-button:hover {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55), inset 0 -1px 0 rgba(255,255,255,0.06);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .cta-button {
+        transition: none;
+    }
+    .cta-button::before {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Ensure the title and button are above the image visually (if overlapping) */
+.flex-container,
+.title {
+    z-index: 1;
+    position: relative;
+}
+
+/* Footer styling */
+.site-footer {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    color: rgba(231, 224, 228, 0.85);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.site-footer p {
+    margin: 0;
+}
