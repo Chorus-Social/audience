@@ -24,7 +24,7 @@ body {
     max-width: 100%;
 }
 
-.flex-container img {
+.flex-container img, picture, source {
     display: block;                 /* remove inline spacing */
     max-width: 100%;                /* don't exceed container width */
     max-height: calc(100vh - 4rem); /* fit within viewport minus padding */
